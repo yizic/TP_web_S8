@@ -32,6 +32,18 @@ app.get('/cities', function (req, res) {
     })
 });
 
+app.post('/cities', function (req, res) {
+
+    fs.stat(__dirname, './cities.json', function(err) {
+        if (!err) {
+            console.log('file or directory exists');
+        }
+        else if (err.code === 'ENOENT') {
+            console.log('file or directory does not exist, it must be created');
+        }
+    });
+})
+
 app.get('/data', function (req, res) {
 
     if(!file){
