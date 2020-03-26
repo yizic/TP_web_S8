@@ -29,10 +29,8 @@ app.get('/data', function (req, res) {
         var tab = [];
         for (let result of results) {
             user = result.split(';');
-            tab.push(`${user[0]}`);
-            tab.push(`${user[1]}`)
+            tab.push(`${user[0]} : ${user[1]}`);
         }
-        console.log(tab[1])
         res.statusCode = 200;
         res.setHeader('Content-Type','text/html')
         res.render('template.pug', { tab: tab, name: 'vincent', message: 'Hello there!'})

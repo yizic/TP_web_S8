@@ -9,11 +9,8 @@ html(lang="en")
     h1 Test Server express
     h2= name
       table
-        tr 
-          td= tab[0]
-          td= tab[1]
-        tr 
-          td= tab[2]
-          td= tab[3]
+        each val in tab
+          tr
+            td= val
     #container.col
     br
