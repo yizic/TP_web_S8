@@ -9,10 +9,14 @@ html(lang="en")
     h1 Test Server express
     h2= name
     <br/>
-      table
-        each val in tab
-          tr
-            td= val
+    table
+      tr
+        th id
+        th name
+      each elem,i in tab
+        tr
+          th !{elem.id}
+          td !{elem.name}
 
     #container.col
     br

@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const fs = require('fs')
 const pug = require("pug");
+
+
 var file = process.argv[2];
 
 const port = 3000;
@@ -11,14 +13,31 @@ app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-if(!file){
-    console.error('file name missing');
-    process.exit(1)
-}
-
 app.get('/', (req, res) => res.send('Hello World'));
 
+app.get('/cities', function (req, res) {
+    fs.readFile(path.join(__dirname, './cities.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            process.exit(1)
+        }
+        var results = JSON.parse(data);
+
+        console.log(results['cities'])
+        
+        res.statusCode = 200
+        res.setHeader('Content-Type','text/html')
+        res.render('template2.pug', { tab: results['cities'], name: 'vincent', message: 'Hello there!'})
+    
+    })
+});
+
 app.get('/data', function (req, res) {
+
+    if(!file){
+        console.error('file name missing');
+        process.exit(1)
+    }
 
     fs.readFile(file,'utf8', (err,data) => {
         if (err) {
