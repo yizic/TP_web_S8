@@ -5,8 +5,9 @@ const fs = require('fs')
 const pug = require("pug");
 var file = process.argv[2];
 
-const compiledFunction = pug.compileFile('./template.pug')
 const port = 3000;
+
+app.set('view engine', 'pug');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -19,27 +20,22 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 app.get('/data', function (req, res) {
 
-    const generatedTemplate = compiledFunction({
-        name: 'vincent'
-    });
-
     fs.readFile(file,'utf8', (err,data) => {
         if (err) {
             console.error(err)
             process.exit(1)
         }
         var results = data.toString().split(/\r\n|\n/)
-        var tab = '<table>';
+        var tab = [];
         for (let result of results) {
             user = result.split(';');
-            tab += `<tr><td>${user[0]}</td><td>${user[1]}</td></tr>`
+            tab.push(`${user[0]}`);
+            tab.push(`${user[1]}`)
         }
-        tab += '<style type="text/css">td { border-bottom: 1px solid #ddd; }</style>'
-        tab += '</table>';
-    
+        console.log(tab[1])
         res.statusCode = 200;
         res.setHeader('Content-Type','text/html')
-        res.end(generatedTemplate + tab)
+        res.render('template.pug', { tab: tab, name: 'vincent', message: 'Hello there!'})
     })
 });
 
